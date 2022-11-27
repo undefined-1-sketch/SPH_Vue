@@ -28,7 +28,7 @@
                 >
                   <a
                     :data-categoryName="c1.categoryName"
-                    :data-catagory1Id="c1.categoryId"
+                    :data-category1Id="c1.categoryId"
                     >{{ c1.categoryName }}</a
                   >
                 </h3>
@@ -45,7 +45,7 @@
                       <dt>
                         <a
                           :data-categoryName="c1.categoryName"
-                          :data-catagory2Id="c2.categoryId"
+                          :data-category2Id="c2.categoryId"
                           >{{ c2.categoryName }}</a
                         >
                       </dt>
@@ -56,7 +56,7 @@
                         >
                           <a
                             :data-categoryName="c1.categoryName"
-                            :data-catagory3Id="c3.categoryId"
+                            :data-category3Id="c3.categoryId"
                             >{{ c3.categoryName }}</a
                           >
                         </em>
@@ -110,17 +110,17 @@ export default {
     },
     goSearch(event) {
       let element = event.target;
-      let { categoryname, catagory1id, catagory2Id, catagory3id } =
+      let { categoryname, category1id, category2id, category3id } =
         element.dataset;
       if (categoryname) {
         let location = { name: "search" };
-        let query = { categoryname: categoryname };
-        if (catagory1id) {
-          query.catagory1id = catagory1id;
-        } else if (catagory2Id) {
-          query.catagory2id = catagory2id;
-        } else if (catagory3id) {
-          query.catagory3id = catagory3id;
+        let query = { categoryName: categoryname };
+        if (category1id) {
+          query.category1Id = category1id;
+        } else if (category2id) {
+          query.category2Id = category2id;
+        } else if (category3id) {
+          query.category3Id = category3id;
         }
         if (this.$route.params) {
           location.params = this.$route.params;

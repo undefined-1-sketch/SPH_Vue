@@ -16,7 +16,17 @@ const actions = {
         }
     }
 };
-const getters = {};
+const getters = {
+    goodsList(state) {
+        return state.searchList.goodsList || [];
+    },
+    attrsList(state) {
+        return state.searchList.attrsList || [];
+    },
+    trademarkList(state) {
+        return state.searchList.trademarkList || [];
+    }
+};
 export default {
     state,
     mutations,

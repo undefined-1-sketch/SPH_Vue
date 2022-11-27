@@ -15,6 +15,10 @@ import 'swiper/css';
 import '@/mock/mockServer'
 new Vue({
   render: h => h(App),
+  //全局时间总线配置
+  beforeCreate() {
+    Vue.prototype.$bus = this;
+  },
   router,
   store
 }).$mount('#app')
