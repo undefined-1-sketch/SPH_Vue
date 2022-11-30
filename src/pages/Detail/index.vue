@@ -93,7 +93,12 @@
                     spuSaleAttrValue, index
                   ) in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
-                  @click="changeActive(spuSaleAttrValue,spuSaleAttr.spuSaleAttrValueList)"
+                  @click="
+                    changeActive(
+                      spuSaleAttrValue,
+                      spuSaleAttr.spuSaleAttrValueList
+                    )
+                  "
                 >
                   {{ spuSaleAttrValue.saleAttrValueName }}
                 </dd>
@@ -101,12 +106,22 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  @change="changeSkuNum"
+                  v-model="skuNum"
+                />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum < 1 ? skuNum : skuNum--"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -351,13 +366,16 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Detail",
-
+  data() {
+    return {
+      skuNum: 1,
+    };
+  },
   components: {
     ImageList,
     Zoom,
   },
   mounted() {
-    console.log(this.$route.params.skuid);
     this.$store.dispatch("getGoodsInfo", this.$route.params.skuid);
   },
   computed: {
@@ -368,12 +386,36 @@ export default {
   },
   methods: {
     changeActive(spuSaleAttrValue, arr) {
-      console.log("###",arr);
-      arr.forEach(element => {
-        element.isChecked=0;
+      arr.forEach((element) => {
+        element.isChecked = 0;
       });
-      spuSaleAttrValue.isChecked=1;
-    }
+      spuSaleAttrValue.isChecked = 1;
+    },
+    //表单元素修改产品个数
+    changeSkuNum(event) {
+      console.log(event.target.value);
+      let value = event.target.value * 1;
+      if (isNaN(value) || value < 1) {
+        this.skuNum = 1;
+      } else {
+        this.skuNum = parseInt(value);
+      }
+    },
+    async addShopCart() {
+      //向服务器发请求
+      try {
+        await this.$store.dispatch("addOrUpdateShopCart", {
+          skuId: this.$route.params.skuid,
+          skuNum: this.skuNum,
+        });
+        //会话存储数据
+        sessionStorage.setItem('SKUINFO',JSON.stringify(this.skuInfo));
+        //路由跳转
+        this.$router.push({name:'addCartSuccess',query:{skuNum:this.skuNum}});
+      } catch (error) {
+        alert(error);
+      }
+    },
   },
 };
 </script>

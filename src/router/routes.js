@@ -4,6 +4,8 @@ import Login from '@/pages/Login'
 import Search from '@/pages/Search'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCart from '@/pages/ShopCart'
 //配置路由
 export default [
     {
@@ -29,6 +31,18 @@ export default [
         name: "detail",
         path: "/detail/:skuid?",
         component: Detail,
+        meta:{show:true}
+    },
+    {
+        name: "addCartSuccess",
+        path: "/addCartSuccess",
+        component: AddCartSuccess,
+        meta:{show:true}
+    },
+    {
+        name: "shopCart",
+        path: "/shopCart",
+        component: ShopCart,
         meta:{show:true}
     },
     //重定向到首页
