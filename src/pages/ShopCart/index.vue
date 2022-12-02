@@ -31,15 +31,16 @@
             <span class="price">{{ cartInfo.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
+            <a href="javascript:void(0)" class="mins" @click="handler('mins',-1,cartInfo)">-</a>
             <input
               autocomplete="off"
               type="text"
               minnum="1"
               class="itxt"
               :value="cartInfo.skuNum"
+              @change="handler('change',$event.target.value,cartInfo)"
             />
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a href="javascript:void(0)" class="plus" @click="handler('add',1,cartInfo)">+</a>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{ cartInfo.skuNum * cartInfo.skuPrice }}</span>
@@ -88,6 +89,31 @@ export default {
     getData() {
       this.$store.dispatch("getCartList");
     },
+    async handler(type,disNum,cart){
+      switch(type){
+        case "add":
+          disNum=1;
+          break;
+        case "mins":
+          disNum=cart.skuNum>1?-1:0;
+          break;
+        case "change":
+          if(isNaN(disNum)||disNum<1){
+            disNum=0;
+          }else{
+            disNum= parseInt(disNum)-cart.skuNum;
+          }
+      }
+      try{
+        console.log("###",cart);
+        console.log("###",disNum);
+        await this.$store.dispatch('addOrUpdateShopCart',{skuId:cart.skuId,skuNum:disNum});
+        this.getData();
+      }catch{
+        alert("error");
+      }
+
+    }
   },
   computed: {
     ...mapGetters(["cartList"]),
