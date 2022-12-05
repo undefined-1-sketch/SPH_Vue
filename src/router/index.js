@@ -7,6 +7,7 @@ Vue.use(VueRouter)
 
 //引入路由组件
 import routes from './routes'
+import store from '@/store'
 
 //先把VueRouter原型对象的push保存一份
 let originPush = VueRouter.prototype.push
@@ -32,11 +33,46 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
         originPReplace.call(this, location, () => { }, () => { })
     }
 }
-
-//配置路由
-export default new VueRouter({
+//对外暴露vuerouter实例
+let router = new VueRouter({
     routes,
     scrollBehavior(to, from, savedPosition) {
         return { y: 0 }
     }
 })
+
+//全局守卫，前置守卫（在路由跳转之间进行判断）
+router.beforeEach(async (to, from, next) => {
+    let token = store.state.user.token;
+    let name = store.state.user.userInfo.name;
+    //登录
+    if (token) {
+        //如果回login
+        if (to.path == '/login' || to.path=='/register') {
+            next('/home');
+        } else {
+            //用户名已有
+            if (name) {
+                next();
+            } else {
+                try {
+                    //获取用户信息
+                    await store.dispatch('getUserInfo');
+                    next();
+                } catch (error) {
+                    //token过期
+                    await store.dispatch('logout');
+                    next('/login');
+                }
+            }
+        }
+    } else {
+        //未登录
+        next();
+        console.log(555);
+    }
+})
+
+
+//配置路由
+export default router;

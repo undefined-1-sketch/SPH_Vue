@@ -16,11 +16,21 @@ import 'swiper/css';
 
 //引入Mock.js  ----mocks数据
 import '@/mock/mockServer'
+
+import * as API from '@/api'
+//引入element-ui
+import { Button, Select, MessageBox } from 'element-ui';
+Vue.use(Button)
+Vue.use(Select)
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+
 new Vue({
   render: h => h(App),
   //全局时间总线配置
   beforeCreate() {
     Vue.prototype.$bus = this;
+    Vue.prototype.$API = API;
   },
   router,
   store

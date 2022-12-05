@@ -10,12 +10,12 @@ const requests = axios.create({
     //基础路径
     baseURL: '/api',
     timeout: 5000
-})
+});
 
 //请求拦截器
-requests.interceptors.request.use((config) => {
-    if (store.state.detail.uuid) {
-        config.headers.userTempId = store.state.detail.uuid;
+requests.interceptors.request.use((config)=>{
+    if(store.state.detail.uuid){
+        config.headers.userTempId=store.state.detail.uuid;
     }
     if (store.state.user.token) {
         config.headers.token = store.state.user.token;
@@ -25,10 +25,10 @@ requests.interceptors.request.use((config) => {
 })
 
 //响应拦截器
-requests.interceptors.response.use((res) => {
+requests.interceptors.response.use((res)=>{
     nprogress.done()
     return res.data
-}, (error) => {
+}, (error)=>{
     return Promise.reject(new Error('fail'))
 })
 

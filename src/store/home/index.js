@@ -20,6 +20,7 @@ const actions = {
     //向服务器发请求
     async catagoryList({commit}){
         let result = await reqCategoryList();
+        console.log("%%%",result);
         if(result.code == 200) {
             commit('CATAGORYLIST', result.data);
         }
