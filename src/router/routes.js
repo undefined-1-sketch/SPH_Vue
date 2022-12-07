@@ -8,8 +8,32 @@ import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
 import Pay from '@/pages/Pay'
+import PaySuccess from '@/pages/PaySuccess'
+import Center from '@/pages/Center'
+import MyOrder from '@/pages/Center/myOrder'
+import GroupOrder from '@/pages/Center/groupOrder'
 //配置路由
 export default [
+    {
+        path: "/center",
+        component: Center,
+        meta:{show:true},
+        children:[
+            {
+                path: "myorder",
+                component:MyOrder
+            },
+            {
+                path:"grouporder",
+                component:GroupOrder
+            },
+            //重定向
+            {
+                path:'/center',
+                redirect:'/center/myorder'
+            }
+        ]
+    },
     {
         path: "/home",
         component: Home,
@@ -57,6 +81,12 @@ export default [
         name: "pay",
         path: "/pay",
         component: Pay,
+        meta:{show:true}
+    },
+    {
+        name: "paySuccess",
+        path: "/paySuccess",
+        component: PaySuccess,
         meta:{show:true}
     },
     //重定向到首页
