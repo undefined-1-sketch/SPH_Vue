@@ -75,13 +75,27 @@ export default [
         name: "trade",
         path: "/trade",
         component: Trade,
-        meta:{show:true}
+        meta:{show:true},
+        beforeEnter (to, from, next) {
+            if(from.path=='shopCart'){
+                next();
+            }else{
+                next(false);
+            }
+        }
     },
     {
         name: "pay",
         path: "/pay",
         component: Pay,
-        meta:{show:true}
+        meta:{show:true},
+        beforeEnter (to, from, next) {
+            if(from.path=='trade'){
+                next();
+            }else{
+                next(false);
+            }
+        }
     },
     {
         name: "paySuccess",

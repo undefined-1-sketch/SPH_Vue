@@ -68,8 +68,14 @@ router.beforeEach(async (to, from, next) => {
         }
     } else {
         //未登录
-        next();
-        console.log(555);
+        //不能去trade ｜ pay | center
+        let toPath = to.path;
+        console.log(toPath);
+        if(toPath.indexOf('trade')!=-1 || toPath.indexOf('pay')!=-1 || toPath.indexOf('center')!=-1){
+            next('/login?redirect='+toPath);
+        }else{
+            next();
+        }
     }
 })
 

@@ -24,7 +24,12 @@ Vue.use(Button)
 Vue.use(Select)
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
-
+//图片懒加载
+import VueLazyload from 'vue-lazyload'
+const mn = require('@/assets/111.gif');
+Vue.use(VueLazyload, {
+  loading: mn
+})
 new Vue({
   render: h => h(App),
   //全局时间总线配置
